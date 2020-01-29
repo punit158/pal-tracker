@@ -11,17 +11,24 @@ import java.util.Map;
 @Repository
 public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
+    private long currentId = 1L;
+
 
     private static Map timeEntyMap = new HashMap<String,TimeEntry>();
 
     @Override
     public TimeEntry create(TimeEntry timeEntry) {
 
-        if(timeEntry != null) {
-            timeEntyMap.put(timeEntry.getId(), timeEntry);
+        Long id = currentId++;
+
+        TimeEntry newTimeEntry = new TimeEntry(id,
+                timeEntry.getProjectId(),timeEntry.getUserId(),timeEntry.getDate(),timeEntry.getHours());
+
+        if(newTimeEntry != null) {
+            timeEntyMap.put(newTimeEntry.getId(), newTimeEntry);
         }
 
-        return (TimeEntry) timeEntyMap.get(timeEntry.getId());
+        return (TimeEntry) timeEntyMap.get(newTimeEntry.getId());
     }
 
     @Override
