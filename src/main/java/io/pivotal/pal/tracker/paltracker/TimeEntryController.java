@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
 import java.util.List;
+import java.util.TimerTask;
 
 @RestController
 @RequestMapping("/time-entries")
@@ -20,34 +21,45 @@ public class TimeEntryController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {
+    public ResponseEntity<TimeEntry> create(@RequestBody TimeEntry timeEntryToCreate) {
         repository.create(timeEntryToCreate);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return new ResponseEntity<>(timeEntryToCreate,HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<TimeEntry>> list() {
-        return ResponseEntity.ok(repository.list());
+        return new ResponseEntity<>(repository.list(),HttpStatus.OK);
     }
 
     @PutMapping("{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody TimeEntry expected) {
 
         repository.update(id,expected);
-        return ResponseEntity.ok(HttpStatus.OK);
+        if(expected != null) {
+            return new ResponseEntity<>(expected, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         repository.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("{id}")
     public ResponseEntity read(@PathVariable Long id) {
 
-        return ResponseEntity.ok(repository.find(id));
+        TimeEntry timerTask =  repository.find(id);
+
+        if(timerTask != null){
+            return new ResponseEntity<>(timerTask,HttpStatus.OK);
+        }else {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
     }
 }
