@@ -31,7 +31,7 @@ public class TimeEntryController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable(value = "id") Long id, @RequestBody TimeEntry expected) {
+    public ResponseEntity update(@PathVariable Long id, @RequestBody TimeEntry expected) {
 
         repository.update(id,expected);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -39,13 +39,13 @@ public class TimeEntryController {
 
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity delete(@PathVariable Long id) {
         repository.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity read(@PathVariable(value = "id") Long id) {
+    public ResponseEntity read(@PathVariable Long id) {
 
         return ResponseEntity.ok(repository.find(id));
 
