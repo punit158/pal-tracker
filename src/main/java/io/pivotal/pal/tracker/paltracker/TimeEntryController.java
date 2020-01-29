@@ -14,7 +14,7 @@ import java.util.TimerTask;
 public class TimeEntryController {
 
     @Autowired
-    InMemoryTimeEntryRepository repository;
+    JdbcTimeEntryRepository repository;
 
 
     public TimeEntryController(TimeEntryRepository timeEntryRepository) {
