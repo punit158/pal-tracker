@@ -9,7 +9,7 @@ import java.sql.Time;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/time-entries")
 public class TimeEntryController {
 
     @Autowired
@@ -19,18 +19,18 @@ public class TimeEntryController {
     public TimeEntryController(TimeEntryRepository timeEntryRepository) {
     }
 
-    @PostMapping("/addTimeTracker")
+    @PostMapping
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {
         repository.create(timeEntryToCreate);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    @GetMapping("/getAllTimeTracker")
+    @GetMapping
     public ResponseEntity<List<TimeEntry>> list() {
         return ResponseEntity.ok(repository.list());
     }
 
-    @PutMapping("updateTimeTracker/{id}")
+    @PutMapping("{id}")
     public ResponseEntity update(@PathVariable(value = "id") Long id, @RequestBody TimeEntry expected) {
 
         repository.update(id,expected);
@@ -38,13 +38,13 @@ public class TimeEntryController {
     }
 
 
-    @DeleteMapping("deleteTimeTracker/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable(value = "id") Long id) {
         repository.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("findTimeTracker/{id}")
+    @GetMapping("{id}")
     public ResponseEntity read(@PathVariable(value = "id") Long id) {
 
         return ResponseEntity.ok(repository.find(id));
